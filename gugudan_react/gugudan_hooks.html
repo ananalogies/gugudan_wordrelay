@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <title>구구단</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const GuGuDan = () => {
+            const [random1, setRandom1] = React.useState(Math.ceil(Math.random() * 9));
+            const [random2, setRandom2] = React.useState(Math.ceil(Math.random() * 9));
+            const [value, setValue] = React.useState('');
+            const [result, setResult] = React.useState('');
+            const refInput = React.useRef(null);
+
+            const onChangeInput = (e) => {
+                setValue(e.target.value);
+            }
+
+            const onSubmitForm = (e) => {
+                e.preventDefault();
+                const answer = random1 * random2;
+                if (parseInt(value, 10) === answer) {
+                    setResult(`정답입니다. ${answer}`);
+                    setRandom1(Math.ceil(Math.random() * 9));
+                    setRandom2(Math.ceil(Math.random() * 9));
+                    setValue('');
+                } else {
+                    setResult('오답입니다.');
+                    setValue('');
+                }
+                refInput.current.focus();
+            }
+
+            return (
+                <React.Fragment>
+                    <div>{random1} 곱하기 {random2}는?</div>
+                    <form onSubmit={onSubmitForm}>
+                        <input ref={refInput} type="number" value={value} onChange={onChangeInput} />
+                        <button type="submit">입력하기</button>
+                    </form>
+                    <div>{result}</div>
+                </React.Fragment>
+            );
+        }
+    </script>
+    <script type="text/babel">
+        ReactDOM.render(<GuGuDan />, document.querySelector('#root')); // 그린다.
+    </script>
+</body>
+
+</html>

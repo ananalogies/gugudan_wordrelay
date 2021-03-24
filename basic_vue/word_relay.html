@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 개발버전, 도움되는 콘솔 경고를 포함. -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>끝말잇기</title>
+</head>
+
+<body>
+    <div id="root">
+        <word-relay start-word="마우스"></word-relay> <!-- 케밥 케이스 -->
+        <word-relay start-word="키보드"></word-relay>
+        <word-relay start-word="모니터"></word-relay>
+    </div>
+    <script>
+        Vue.component('word-relay', { /* 컴포넌트는 인스턴스보다는 위에 */
+            template: `
+                <div>
+                    <div>{{word}}</div>
+                    <form v-on:submit="onSubmitForm">
+                        <!-- v-model로 input과 data의 value를 연결 -->
+                        <input ref="answer" type="text" v-model="value" /> 
+                        <button type="submit">입력하기</button>
+                    </form>
+                    <div>{{result}}</div>
+                </div>
+            `,
+            props: ['startWord'],
+            data() { /* 컴포넌트가 생성될 때마다 새로운 데이터 객체를 생성하도록 */
+                return {
+                    word: this.startWord, /* 케멀 케이스 */
+                    value: '',
+                    result: '',
+                };
+            },
+            methods: {
+                onSubmitForm(e) {
+                    e.preventDefault();
+                    if (this.word[this.word.length - 1] === this.value[0]) {
+                        this.result = '정답';
+                        this.word = this.value;
+                        this.value = '';
+                    } else {
+                        this.result = '오답';
+                        this.value = '';
+                    }
+                    this.$refs.answer.focus();
+                }
+            },
+        })
+    </script>
+    <script>
+        const app = new Vue({
+            el: '#root'
+        })
+    </script>
+</body>
+
+</html>

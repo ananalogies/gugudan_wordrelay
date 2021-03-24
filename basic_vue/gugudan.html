@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 개발버전, 도움되는 콘솔 경고를 포함. -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>구구단</title>
+</head>
+
+<body>
+    <div id="root">
+        <div>{{random1}} 곱하기 {{random2}}는?</div>
+        <form v-on:submit="onSubmitForm">
+            <!-- v-model로 input과 data의 value를 연결 -->
+            <input ref="answer" type="number" v-model="value" /> 
+            <button type="submit">입력하기</button>
+        </form>
+        <div>{{result}}</div>
+    </div>
+    <script>
+        const app = new Vue({
+            el: '#root',
+            data: {
+                random1: Math.ceil(Math.random() * 9),
+                random2: Math.ceil(Math.random() * 9),
+                value: '',
+                result: '',
+            },
+            methods: {
+                onSubmitForm(e) {
+                    e.preventDefault();
+                    if(this.random1 * this.random2 === parseInt(this.value, 10)) {
+                        this.result = '정답';
+                        this.random1 = Math.ceil(Math.random() * 9);
+                        this.random2 = Math.ceil(Math.random() * 9);
+                        this.value = '';
+                    } else {
+                        this.result = '오답';
+                        this.value = '';
+                    }
+                    this.$refs.answer.focus();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

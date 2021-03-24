@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 개발버전, 도움되는 콘솔 경고를 포함. -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>좋아요</title>
+</head>
+
+<body>
+    <div id="app">
+        <div v-if="liked">LIKED!</div>
+        <button v-else v-on:click="onClickButton">LIKE</button>
+    </div>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                liked: false,
+            },
+            methods: {
+                onClickButton() {
+                    this.liked = true; // this === data
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

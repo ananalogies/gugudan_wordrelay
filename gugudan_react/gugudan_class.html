@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <title>구구단</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class GuGuDan extends React.Component {
+            // constructor(props) {
+            // super(props);
+            // this.state = {
+            state = {
+                random1: Math.ceil(Math.random() * 9),
+                random2: Math.ceil(Math.random() * 9),
+                value: '',
+                result: '',
+            };
+            // }
+            onChangeInput = (e) => {
+                this.setState({
+                    value: e.target.value // target은 이벤트가 실제 발생하는 target
+                })
+            }
+            onSubmitForm = (e) => {
+                e.preventDefault();
+                const answer = this.state.random1 * this.state.random2;
+                if (parseInt(this.state.value, 10) === answer) {
+                    this.setState((prevState) => {
+                        return {
+                            result: `정답입니다. ${prevState.value}`,
+                            random1: Math.ceil(Math.random() * 9),
+                            random2: Math.ceil(Math.random() * 9),
+                            value: '',
+                        };
+                    })
+                } else {
+                    this.setState({
+                        result: '오답입니다.',
+                        value: '',
+                    })
+                }
+                this.input.focus(); // button click 시 focus 유지
+            }
+            input;
+            refInput = (c) => {
+                this.input = c;
+            }
+            render() {
+                return (
+                    <React.Fragment>
+                        <div>{this.state.random1} 곱하기 {this.state.random2}는?</div>
+                        <form onSubmit={this.onSubmitForm}>
+                            <input ref={this.refInput} type="number" value={this.state.value} onChange={this.onChangeInput} />
+                            <button type="submit">입력하기</button>
+                        </form>
+                        <div>{this.state.result}</div>
+                    </React.Fragment>
+                );
+            }
+        }
+    </script>
+    <script type="text/babel">
+        ReactDOM.render(<GuGuDan />, document.querySelector('#root')); // 그린다.
+    </script>
+</body>
+
+</html>
